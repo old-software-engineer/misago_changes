@@ -11,7 +11,7 @@ export default function(props) {
       <span className="material-icon">
         chat
       </span>
-      {gettext("Reply")}
+      {gettext("Answer")}
     </button>
   );
 }

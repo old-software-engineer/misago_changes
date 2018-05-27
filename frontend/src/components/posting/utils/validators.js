@@ -24,8 +24,8 @@ export function getPostValidators() {
 export function getTitleLengthMin() {
   return minLength(misago.get('SETTINGS').thread_title_length_min, (limitValue, length) => {
     const message = ngettext(
-      "Thread title should be at least %(limit_value)s character long (it has %(show_value)s).",
-      "Thread title should be at least %(limit_value)s characters long (it has %(show_value)s).",
+      "Question title should be at least %(limit_value)s character long (it has %(show_value)s).",
+      "Question title should be at least %(limit_value)s characters long (it has %(show_value)s).",
       limitValue);
 
     return interpolate(message, {
@@ -38,8 +38,8 @@ export function getTitleLengthMin() {
 export function getTitleLengthMax() {
   return maxLength(misago.get('SETTINGS').thread_title_length_max, (limitValue, length) => {
     const message = ngettext(
-      "Thread title cannot be longer than %(limit_value)s character (it has %(show_value)s).",
-      "Thread title cannot be longer than %(limit_value)s characters (it has %(show_value)s).",
+      "Question title cannot be longer than %(limit_value)s character (it has %(show_value)s).",
+      "Question title cannot be longer than %(limit_value)s characters (it has %(show_value)s).",
       limitValue);
 
     return interpolate(message, {

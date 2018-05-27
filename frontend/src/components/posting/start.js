@@ -87,7 +87,7 @@ export default class extends Form {
   };
 
   onCancel = () => {
-    const cancel = confirm(gettext("Are you sure you want to discard thread?"));
+    const cancel = confirm(gettext("Are you sure you want to discard question?"));
     if (cancel) {
       posting.close();
     }
@@ -157,7 +157,7 @@ export default class extends Form {
 
   clean() {
     if (!this.state.title.trim().length) {
-      snackbar.error(gettext("You have to enter thread title."));
+      snackbar.error(gettext("You have to enter question title."));
       return false;
     }
 
@@ -194,7 +194,7 @@ export default class extends Form {
   }
 
   handleSuccess(success) {
-    snackbar.success(gettext("Your thread has been posted."));
+    snackbar.success(gettext("Your question has been posted."));
     window.location = success.url;
 
     // keep form loading
@@ -262,7 +262,7 @@ export default class extends Form {
                 className="form-control"
                 disabled={this.state.isLoading}
                 onChange={this.onTitleChange}
-                placeholder={gettext("Thread title")}
+                placeholder={gettext("Question title")}
                 type="text"
                 value={this.state.title}
               />
@@ -301,7 +301,7 @@ export default class extends Form {
                 onAttachmentsChange={this.onAttachmentsChange}
                 onCancel={this.onCancel}
                 onChange={this.onPostChange}
-                submitLabel={gettext("Post thread")}
+                submitLabel={gettext("Post question")}
                 value={this.state.post}
               />
 

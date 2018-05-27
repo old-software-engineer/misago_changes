@@ -74,7 +74,7 @@ export default class extends Form {
   };
 
   onCancel = () => {
-    const cancel = confirm(gettext("Are you sure you want to discard your reply?"));
+    const cancel = confirm(gettext("Are you sure you want to discard your answer?"));
     if (cancel) {
       posting.close();
     }
@@ -115,7 +115,7 @@ export default class extends Form {
   }
 
   handleSuccess(success) {
-    snackbar.success(gettext("Your reply has been posted."));
+    snackbar.success(gettext("Your answer has been posted."));
     window.location = success.url.index;
 
     // keep form loading
@@ -152,7 +152,7 @@ export default class extends Form {
                   onAttachmentsChange={this.onAttachmentsChange}
                   onCancel={this.onCancel}
                   onChange={this.onPostChange}
-                  submitLabel={gettext("Post reply")}
+                  submitLabel={gettext("Post answer")}
                   value={this.state.post}
                 />
 

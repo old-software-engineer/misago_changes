@@ -136,7 +136,7 @@ export function ParentCategory({ categories, category }) {
       <span className="material-icon">
         chevron_left
       </span>
-      {parent.parent ? parent.name : gettext("Threads")}
+      {parent.parent ? parent.name : gettext("Questions")}
     </Link>
   );
 }

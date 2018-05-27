@@ -117,7 +117,7 @@ export class Like extends React.Component {
         onClick={this.onClick}
         type="button"
       >
-        {this.props.post.is_liked ? gettext("Liked") : gettext("Like")}
+        {this.props.post.is_liked ? gettext("Upvoted") : gettext("Upvote")}
       </button>
     );
   }
@@ -191,7 +191,7 @@ export function getLikesMessage(likes, users) {
   const usernames = users.slice(0, 3).map((u) => u.username);
 
   if (usernames.length == 1) {
-    return interpolate(gettext("%(user)s likes this."), {
+    return interpolate(gettext("%(user)s upvoted this."), {
       user: usernames[0]
     }, true);
   }
@@ -207,14 +207,14 @@ export function getLikesMessage(likes, users) {
   }, true);
 
   if (hiddenLikes === 0) {
-    return interpolate(gettext("%(users)s like this."), {
+    return interpolate(gettext("%(users)s upvoted this."), {
       users: usernamesList
     }, true);
   }
 
   const message = ngettext(
-    "%(users)s and %(likes)s other user like this.",
-    "%(users)s and %(likes)s other users like this.",
+    "%(users)s and %(likes)s other user upvoted this.",
+    "%(users)s and %(likes)s other users upvoted this.",
     hiddenLikes);
 
   return interpolate(message, {
@@ -245,7 +245,7 @@ export class Reply extends React.Component {
           type="button"
           onClick={this.onClick}
         >
-          {gettext("Reply")}
+          {gettext("Answer")}
         </button>
       );
     } else {

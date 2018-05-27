@@ -76,7 +76,7 @@ class ViewModel(object):
             'poster__rank',
             'poster__ban_cache',
             'poster__online_tracker',
-        ).filter(is_event=False).order_by('id')
+        ).filter(is_event=False).order_by('likes')
         return exclude_invisible_posts(request.user, thread.category, queryset)
 
     def get_events_queryset(self, request, thread, limit, first_post=None, last_post=None):

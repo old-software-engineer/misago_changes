@@ -85,7 +85,7 @@ export function IsClosed(props) {
 }
 
 export function Replies(props) {
-  const message = ngettext("%(replies)s reply", "%(replies)s replies", props.thread.replies);
+  const message = ngettext("%(replies)s answer", "%(replies)s answers", props.thread.replies);
   const legend = interpolate(message, {'replies': props.thread.replies}, true);
 
   return <li className="thread-replies">
@@ -116,7 +116,7 @@ export function LastReply(props) {
     relative: escapeHtml(props.thread.last_post_on.fromNow())
   }, true);
 
-  const message = interpolate(escapeHtml(gettext("last reply by %(user)s %(date)s")), {
+  const message = interpolate(escapeHtml(gettext("last answer by %(user)s %(date)s")), {
     date, user
   }, true);
 

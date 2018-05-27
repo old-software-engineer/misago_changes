@@ -76,21 +76,21 @@ def validate_title(title):
 def validate_post_length(post):
     post_len = len(post)
 
-    if not post_len:
-        raise ValidationError(_("You have to enter a message."))
-
-    if post_len < settings.post_length_min:
-        message = ungettext(
-            "Posted message should be at least %(limit_value)s character long (it has %(show_value)s).",
-            "Posted message should be at least %(limit_value)s characters long (it has %(show_value)s).",
-            settings.post_length_min,
-        )
-        raise ValidationError(
-            message % {
-                'limit_value': settings.post_length_min,
-                'show_value': post_len,
-            }
-        )
+    # if not post_len:
+    #     raise ValidationError(_("You have to enter a message."))
+    #
+    # if post_len < settings.post_length_min:
+    #     message = ungettext(
+    #         "Posted message should be at least %(limit_value)s character long (it has %(show_value)s).",
+    #         "Posted message should be at least %(limit_value)s characters long (it has %(show_value)s).",
+    #         settings.post_length_min,
+    #     )
+    #     raise ValidationError(
+    #         message % {
+    #             'limit_value': settings.post_length_min,
+    #             'show_value': post_len,
+    #         }
+    #     )
 
     if settings.post_length_max and post_len > settings.post_length_max:
         message = ungettext(

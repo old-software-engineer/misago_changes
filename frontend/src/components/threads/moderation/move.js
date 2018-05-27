@@ -68,7 +68,7 @@ export default class extends Form {
       {op: 'replace', path: 'category', value: this.state.category},
       {op: 'replace', path: 'flatten-categories', value: null},
       {op: 'add', path: 'acl', value: true}
-    ], gettext("Selected threads were moved."), onSuccess);
+    ], gettext("Selected questions were moved."), onSuccess);
   };
   /* jshint ignore:end */
 
@@ -104,7 +104,7 @@ export default class extends Form {
           {gettext("Cancel")}
         </button>
         <button className="btn btn-primary">
-          {gettext("Move threads")}
+          {gettext("Move questions")}
         </button>
       </div>
     </form>;
@@ -121,10 +121,10 @@ export default class extends Form {
       </div>
       <div className="message-body">
         <p className="lead">
-          {gettext("You can't move threads because there are no categories you are allowed to move them to.")}
+          {gettext("You can't move questions because there are no categories you are allowed to move them to.")}
         </p>
         <p>
-          {gettext("You need permission to start threads in category to be able to move threads to it.")}
+          {gettext("You need permission to start questions in category to be able to move questions to it.")}
         </p>
         <button
           className="btn btn-default"
@@ -147,7 +147,7 @@ export default class extends Form {
                   aria-label={gettext("Close")}>
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 className="modal-title">{gettext("Move threads")}</h4>
+          <h4 className="modal-title">{gettext("Move questions")}</h4>
         </div>
         {this.state.category ? this.renderForm() : this.renderCantMoveMessage()}
       </div>

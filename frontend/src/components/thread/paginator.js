@@ -136,12 +136,12 @@ export function More(props) {
   let message = null;
   if (props.more) {
     message = ngettext(
-      "There is %(more)s more post in this thread.",
-      "There are %(more)s more posts in this thread.",
+      "There is %(more)s more post in this question.",
+      "There are %(more)s more posts in this question.",
       props.more);
     message = interpolate(message, {'more': props.more}, true);
   } else {
-    message = gettext("There are no more posts in this thread.");
+    message = gettext("There are no more posts in this question.");
   }
 
   return <p>{message}</p>;

@@ -24,11 +24,11 @@ export function getPageTitle(route) {
     if (route.list.path) {
       return {
         title: route.list.longName,
-        parent: gettext("Threads")
+        parent: gettext("Questions")
       };
     } else {
       return {
-        title: gettext("Threads")
+        title: gettext("Questions")
       };
     }
   }

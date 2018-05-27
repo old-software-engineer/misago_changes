@@ -85,7 +85,7 @@ export default class extends React.Component {
         path: 'weight',
         value: 2
       }
-    ], gettext("Selected threads were pinned globally."));
+    ], gettext("Selected questions were pinned globally."));
   };
 
   pinLocally = () => {
@@ -95,7 +95,7 @@ export default class extends React.Component {
         path: 'weight',
         value: 1
       }
-    ], gettext("Selected threads were pinned locally."));
+    ], gettext("Selected questions were pinned locally."));
   };
 
   unpin = () => {
@@ -105,7 +105,7 @@ export default class extends React.Component {
         path: 'weight',
         value: 0
       }
-    ], gettext("Selected threads were unpinned."));
+    ], gettext("Selected questions were unpinned."));
   };
 
   approve = () => {
@@ -115,7 +115,7 @@ export default class extends React.Component {
         path: 'is-unapproved',
         value: false
       }
-    ], gettext("Selected threads were approved."));
+    ], gettext("Selected questions were approved."));
   };
 
   open = () => {
@@ -125,7 +125,7 @@ export default class extends React.Component {
         path: 'is-closed',
         value: false
       }
-    ], gettext("Selected threads were opened."));
+    ], gettext("Selected questions were opened."));
   };
 
   close = () => {
@@ -135,7 +135,7 @@ export default class extends React.Component {
         path: 'is-closed',
         value: true
       }
-    ], gettext("Selected threads were closed."));
+    ], gettext("Selected questions were closed."));
   };
 
   unhide = () => {
@@ -145,7 +145,7 @@ export default class extends React.Component {
         path: 'is-hidden',
         value: false
       }
-    ], gettext("Selected threads were unhidden."));
+    ], gettext("Selected questions were unhidden."));
   };
 
   hide = () => {
@@ -155,7 +155,7 @@ export default class extends React.Component {
         path: 'is-hidden',
         value: true
       }
-    ], gettext("Selected threads were hidden."));
+    ], gettext("Selected questions were hidden."));
   };
 
   move = () => {
@@ -178,7 +178,7 @@ export default class extends React.Component {
           'id': thread.id,
           'title': thread.title,
           'errors': [
-            gettext("You don't have permission to merge this thread with others.")
+            gettext("You don't have permission to merge this question with others.")
           ]
         });
       }
@@ -186,7 +186,7 @@ export default class extends React.Component {
 
     if (this.props.threads.length < 2) {
       snackbar.info(
-        gettext("You have to select at least two threads to merge."));
+        gettext("You have to select at least two question to merge."));
     } else if (errors.length) {
       modal.show(<ErrorsModal errors={errors} />);
       return;
@@ -196,7 +196,7 @@ export default class extends React.Component {
   };
 
   delete = () => {
-    if (!confirm(gettext("Are you sure you want to delete selected threads?"))) {
+    if (!confirm(gettext("Are you sure you want to delete selected questions?"))) {
       return;
     }
 
@@ -212,7 +212,7 @@ export default class extends React.Component {
         this.props.deleteThread(thread);
       });
 
-      snackbar.success(gettext("Selected threads were deleted."));
+      snackbar.success(gettext("Selected questions were deleted."));
     }, (rejection) => {
       if (rejection.status === 400) {
         const failedThreads = rejection.map((thread) => { return thread.id; });
@@ -288,7 +288,7 @@ export default class extends React.Component {
           <span className="material-icon">
             panorama_fish_eye
           </span>
-          {gettext("Unpin threads")}
+          {gettext("Unpin questions")}
         </button>
       </li>
     );
@@ -309,7 +309,7 @@ export default class extends React.Component {
           <span className="material-icon">
             arrow_forward
           </span>
-          {gettext("Move threads")}
+          {gettext("Move questions")}
         </button>
       </li>
     );
@@ -330,7 +330,7 @@ export default class extends React.Component {
           <span className="material-icon">
             call_merge
           </span>
-          {gettext("Merge threads")}
+          {gettext("Merge questions")}
         </button>
       </li>
     );
@@ -351,7 +351,7 @@ export default class extends React.Component {
           <span className="material-icon">
             done
           </span>
-          {gettext("Approve threads")}
+          {gettext("Approve questions")}
         </button>
       </li>
     );
@@ -372,7 +372,7 @@ export default class extends React.Component {
           <span className="material-icon">
             lock_open
           </span>
-          {gettext("Open threads")}
+          {gettext("Open questions")}
         </button>
       </li>
     );
@@ -393,7 +393,7 @@ export default class extends React.Component {
           <span className="material-icon">
             lock_outline
           </span>
-          {gettext("Close threads")}
+          {gettext("Close questions")}
         </button>
       </li>
     );
@@ -414,7 +414,7 @@ export default class extends React.Component {
           <span className="material-icon">
             visibility
           </span>
-          {gettext("Unhide threads")}
+          {gettext("Unhide questions")}
         </button>
       </li>
     );
@@ -435,7 +435,7 @@ export default class extends React.Component {
           <span className="material-icon">
             visibility_off
           </span>
-          {gettext("Hide threads")}
+          {gettext("Hide questions")}
         </button>
       </li>
     );
@@ -456,7 +456,7 @@ export default class extends React.Component {
           <span className="material-icon">
             clear
           </span>
-          {gettext("Delete threads")}
+          {gettext("Delete questions")}
         </button>
       </li>
     );

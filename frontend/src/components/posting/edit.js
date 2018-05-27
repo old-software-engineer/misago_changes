@@ -110,7 +110,7 @@ export default class extends Form {
   }
 
   handleSuccess(success) {
-    snackbar.success(gettext("Reply has been edited."));
+    snackbar.success(gettext("Answer has been edited."));
     window.location = success.url.index;
 
     // keep form loading
@@ -153,7 +153,7 @@ export default class extends Form {
                   onProtect={this.onProtect}
                   onUnprotect={this.onUnprotect}
                   protect={this.state.protect}
-                  submitLabel={gettext("Edit reply")}
+                  submitLabel={gettext("Edit answer")}
                   value={this.state.post}
                 />
 

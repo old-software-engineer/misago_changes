@@ -96,6 +96,7 @@ export default class extends React.Component {
           disabled={this.props.loading}
           id="editor-textarea"
           onChange={this.props.onChange}
+          placeholder={gettext("You can describe, clarify or post more details about your inquiry here. However that is completely optional and up to you....")}
           rows="9"
         ></textarea>
         <div className="editor-footer">

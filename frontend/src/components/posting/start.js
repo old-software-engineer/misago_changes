@@ -97,6 +97,10 @@ export default class extends Form {
     this.changeValue('title', event.target.value);
   };
 
+  onTagsChange = (event) => {
+    this.changeValue('tags', event.target.value);
+  };
+
   onCategoryChange = (event) => {
     const category = this.state.categories.find((item) => {
       return event.target.value == item.value;
@@ -266,7 +270,7 @@ export default class extends Form {
                 className="form-control"
                 disabled={this.state.isLoading}
                 onChange={this.onTitleChange}
-                placeholder={gettext("Question title")}
+                placeholder={gettext("Type your question here...")}
                 type="text"
                 value={this.state.title}
               />
@@ -296,6 +300,17 @@ export default class extends Form {
               showOptions={this.state.showOptions}
             />
           </div>
+            <div className="row first-row">
+                <div className="col-md-12">
+                  <input
+                    className="form-control"
+                    disabled={this.state.isLoading}
+                    onChange={this.onTagsChange}
+                    placeholder={gettext("Please enter tags..")}
+                    type="text"
+                  />
+                </div>
+            </div>
           <div className="row">
             <div className="col-md-12">
 

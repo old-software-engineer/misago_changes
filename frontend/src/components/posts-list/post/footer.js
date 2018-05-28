@@ -245,7 +245,7 @@ export class Reply extends React.Component {
           type="button"
           onClick={this.onClick}
         >
-          {gettext("Answer")}
+          {gettext("Comment")}
         </button>
       );
     } else {

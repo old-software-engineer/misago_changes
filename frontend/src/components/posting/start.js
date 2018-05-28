@@ -161,6 +161,10 @@ export default class extends Form {
       return false;
     }
 
+    if ((!this.state.post.trim().length)){
+        this.state.post= "&nbsp;"
+    }
+
     if (!this.state.post.trim().length) {
       snackbar.error(gettext("You have to enter a message."));
       return false;

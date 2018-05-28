@@ -25,7 +25,7 @@ UserSerializer = BaseUserSerializer.subset_fields(
 class PostSerializer(serializers.ModelSerializer, MutableFields):
     poster = UserSerializer(many=False, read_only=True)
     poster_ip = serializers.SerializerMethodField()
-    content = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField(allow_null=True)
     attachments = serializers.SerializerMethodField()
     last_editor = serializers.PrimaryKeyRelatedField(read_only=True)
     hidden_by = serializers.PrimaryKeyRelatedField(read_only=True)

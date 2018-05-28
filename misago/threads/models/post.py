@@ -35,8 +35,8 @@ class Post(models.Model):
     )
     poster_name = models.CharField(max_length=255)
     poster_ip = models.GenericIPAddressField()
-    original = models.TextField()
-    parsed = models.TextField()
+    original = models.TextField(null=True, blank=True)
+    parsed = models.TextField(null=True, blank=True)
     checksum = models.CharField(max_length=64, default='-')
     mentions = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="mention_set")
 

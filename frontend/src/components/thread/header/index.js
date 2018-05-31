@@ -9,21 +9,25 @@ import ajax from 'misago/services/ajax';
 import snackbar from 'misago/services/snackbar';
 import store from 'misago/services/store';
 import * as thread from 'misago/reducers/thread';
+var tags_sting = ""
 
 export default class extends Form {
   constructor(props) {
     super(props);
+    for (var i=0; i < props.tags.results.length; i++) {
+        tags_sting = tags_sting + "#" + props.tags.results[i].tag_name
+    }
     this.state = {
       isEditing: false,
       isLoading: false,
 
       title: props.thread.title,
+
       validators: {
         title: getTitleValidators()
       },
       errors: {}
     };
-
   }
 
   onChange = (event) => {
@@ -82,7 +86,10 @@ export default class extends Form {
     }
   }
 
+
+
   render() {
+
     const {thread, user} = this.props;
     const showModeration = !!user.id && isModerationVisible(thread);
 
@@ -141,7 +148,8 @@ export default class extends Form {
                 <h1>
                   {thread.title}
                 </h1>
-                <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags}</h4>
+
+                <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags_sting}</h4>
               </div>
               <div className={showModeration ? "col-sm-3 col-md-4" : "col-sm-3 col-md-2"}>
                 <div className="row xs-margin-top md-margin-top-no">
@@ -178,6 +186,7 @@ export default class extends Form {
                 <h1>
                   {thread.title}
                 </h1>
+                <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags_sting}</h4>
               </div>
               <div className="col-sm-3 col-md-2">
                 <div className="row xs-margin-top md-margin-top-no">
@@ -199,6 +208,7 @@ export default class extends Form {
         <Breadcrumbs path={thread.path} />
         <div className="container">
           <h1>{thread.title}</h1>
+           <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags_sting}</h4>
         </div>
         <Stats thread={thread} />
       </div>

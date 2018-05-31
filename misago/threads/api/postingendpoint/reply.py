@@ -34,7 +34,11 @@ class ReplyMiddleware(PostingMiddleware):
 
         self.post.updated_on = self.datetime
         self.post.save()
-        tags = self.request.data['tags']
+        try:
+            if self.request.data['tags']:
+                tags = self.request.data['tags']
+        except:
+            tags = ""
         if tags:
             splited_tags = tags.split("#")
             for tag in splited_tags:

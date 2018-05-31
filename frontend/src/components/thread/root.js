@@ -9,7 +9,8 @@ export function select(store) {
     'posts': store.posts,
     'thread': store.thread,
     'tick': store.tick.tick,
-    'user': store.auth.user
+    'user': store.auth.user,
+    'tags': misago.get('TAGS'),
   };
 }
 

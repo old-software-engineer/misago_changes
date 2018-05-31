@@ -8,3 +8,4 @@ from .postlike import *
 from .attachment import *
 from .poll import *
 from .pollvote import *
+from .tags import *

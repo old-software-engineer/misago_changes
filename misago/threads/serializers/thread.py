@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.urls import reverse
 
 from misago.categories.serializers import CategorySerializer
+from .tags import TagSerializer
 from misago.core.serializers import MutableFields
 from misago.threads.models import Thread
 
@@ -21,9 +22,15 @@ BasicCategorySerializer = CategorySerializer.subset_fields(
     'level', 'lft', 'rght', 'is_read', 'url'
 )
 
+BasicTagSerializer = TagSerializer.subset_fields(
+    'id', 'tag_name', 'thread_id','created_on', 'updated_on',
+    'search_document'
+)
+
 
 class ThreadSerializer(serializers.ModelSerializer, MutableFields):
     category = BasicCategorySerializer(many=False, read_only=True)
+    # tags = BasicTagSerializer(many=True, read_only=True)
 
     acl = serializers.SerializerMethodField()
     has_unapproved_posts = serializers.SerializerMethodField()

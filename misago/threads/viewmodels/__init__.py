@@ -3,3 +3,4 @@ from .post import *
 from .posts import *
 from .thread import *
 from .threads import *
+from .tags import *

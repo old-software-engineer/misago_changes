@@ -208,6 +208,8 @@ class Thread(models.Model):
                 self.has_events = True
             else:
                 self.has_events = self.post_set.filter(is_event=True).exists()
+        tags = self.tag_set.order_by('id')
+        self.create_tags(self,tags)
 
     @property
     def has_best_answer(self):

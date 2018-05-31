@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 
 from misago.categories import PRIVATE_THREADS_ROOT_NAME, THREADS_ROOT_NAME
 from misago.core.shortcuts import get_int_or_404
-from misago.threads.models import Post, Thread
+from misago.threads.models import Post, Thread, Tag
 from misago.threads.moderation import threads as moderation
 from misago.threads.permissions import allow_use_private_threads
 from misago.threads.viewmodels import (ForumThread, PrivateThread,
@@ -72,6 +72,7 @@ class ThreadViewSet(ViewSet):
         # Initialize empty instances for new thread
         thread = Thread()
         post = Post(thread=thread)
+        tag = Tag(thread=thread)
 
         # Put them through posting pipeline
         posting = PostingEndpoint(
@@ -80,6 +81,7 @@ class ThreadViewSet(ViewSet):
             tree_name=THREADS_ROOT_NAME,
             thread=thread,
             post=post,
+            tag=tag,
         )
 
         if posting.is_valid():
@@ -127,7 +129,7 @@ class PrivateThreadViewSet(ViewSet):
         # Initialize empty instances for new thread
         thread = Thread()
         post = Post(thread=thread)
-
+        tag = Tag(thread=thread)
         # Put them through posting pipeline
         posting = PostingEndpoint(
             request,
@@ -135,6 +137,7 @@ class PrivateThreadViewSet(ViewSet):
             tree_name=PRIVATE_THREADS_ROOT_NAME,
             thread=thread,
             post=post,
+            tag=tag,
         )
 
         if posting.is_valid():

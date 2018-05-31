@@ -262,6 +262,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     threads = models.PositiveIntegerField(default=0)
+    tags = models.PositiveIntegerField(default=0)
     posts = models.PositiveIntegerField(default=0, db_index=True)
 
     last_posted_on = models.DateTimeField(null=True, blank=True)

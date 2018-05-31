@@ -13,18 +13,17 @@ import * as thread from 'misago/reducers/thread';
 export default class extends Form {
   constructor(props) {
     super(props);
-
     this.state = {
       isEditing: false,
       isLoading: false,
 
       title: props.thread.title,
-
       validators: {
         title: getTitleValidators()
       },
       errors: {}
     };
+
   }
 
   onChange = (event) => {
@@ -47,7 +46,7 @@ export default class extends Form {
 
   clean() {
     if (!this.state.title.trim().length) {
-      snackbar.error(gettext("You have to enter thread title."));
+      snackbar.error(gettext("You have to enter question title."));
       return false;
     }
 
@@ -142,6 +141,7 @@ export default class extends Form {
                 <h1>
                   {thread.title}
                 </h1>
+                <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags}</h4>
               </div>
               <div className={showModeration ? "col-sm-3 col-md-4" : "col-sm-3 col-md-2"}>
                 <div className="row xs-margin-top md-margin-top-no">

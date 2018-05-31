@@ -57,6 +57,7 @@ class UserSerializer(serializers.ModelSerializer, MutableFields):
             'following',
             'threads',
             'posts',
+            'tags',
             'acl',
             'is_followed',
             'is_blocked',

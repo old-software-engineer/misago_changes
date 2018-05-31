@@ -34,6 +34,22 @@ class ReplyMiddleware(PostingMiddleware):
 
         self.post.updated_on = self.datetime
         self.post.save()
+        tags = self.request.data['tags']
+        if tags:
+            splited_tags = tags.split("#")
+            for tag in splited_tags:
+                if tag:
+                    self.tag.tag_name = tag.replace(" ", "")
+                    self.tag.updated_on = self.datetime
+                    self.tag.created_on = self.datetime
+                    self.tag.thread_id = self.tag.thread.id
+                    self.tag.save()
+                    self.tag.id = self.tag.id+1
+                    self.tag.pk =  self.tag.pk+1
+                    self.tag.tag_name = ""
+                    self.tag.updated_on = ""
+                    self.tag.created_on = ""
+                    self.tag.thread_id = ""
 
         self.post.update_search_vector()
         update_post_checksum(self.post)

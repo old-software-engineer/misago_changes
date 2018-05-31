@@ -28,6 +28,7 @@ export default class extends Form {
       category: props.category || null,
       categories: [],
       post: '',
+      tags: '',
       attachments: [],
       close: false,
       hide: false,
@@ -194,6 +195,7 @@ export default class extends Form {
       title: this.state.title,
       category: this.state.category,
       post: this.state.post,
+      tags: this.state.tags,
       attachments: attachments.clean(this.state.attachments),
       close: this.state.close,
       hide: this.state.hide,
@@ -307,6 +309,8 @@ export default class extends Form {
                     disabled={this.state.isLoading}
                     onChange={this.onTagsChange}
                     placeholder={gettext("Please enter tags..")}
+                    name={gettext("tags")}
+                    value={this.state.tags}
                     type="text"
                   />
                 </div>

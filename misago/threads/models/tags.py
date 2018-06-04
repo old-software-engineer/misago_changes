@@ -37,20 +37,3 @@ class Tag(models.Model):
 
     def __str__(self):
         return '%s...' % self.tag_name
-
-    # def create_tag(self):
-    #     self.tag_name = "dummy tag"
-
-    # def delete(self, *args, **kwargs):
-    #     from misago.threads.signals import delete_post
-    #     delete_post.send(sender=self)
-    #     super(Post, self).delete(*args, **kwargs)
-
-    # def get_api_url(self):
-    #     return self.thread_type.get_post_api_url(self)
-
-    # def set_search_document(self, thread_title=None):
-    #     if tag_title:
-    #         self.search_document = filter_search([tag_name])
-    #     else:
-    #         self.search_document = filter_search(self.original)

@@ -1,6 +1,10 @@
+import os
+
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
+
+from django.core.mail import send_mail
 
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
@@ -20,7 +24,15 @@ from .threadendpoints.editor import thread_start_editor
 from .threadendpoints.list import private_threads_list_endpoint, threads_list_endpoint
 from .threadendpoints.merge import thread_merge_endpoint, threads_merge_endpoint
 from .threadendpoints.patch import bulk_patch_endpoint, thread_patch_endpoint
+import json
+from django.http import JsonResponse
 
+from django.http import HttpResponse
+from misago.users.models import user
+from misago.threads.models import Report
+import datetime
+from django.core import serializers
+import devproject.settings as setting
 
 class ViewSet(viewsets.ViewSet):
     thread = None
@@ -101,6 +113,51 @@ class ThreadViewSet(ViewSet):
         thread = self.get_thread(request, pk).unwrap()
         return thread_merge_endpoint(request, thread, self.thread)
 
+    @detail_route(methods=['get', 'post'])
+    def send_email(self, thread_pk, email_id, user_id):
+        thread_url =thread_url ='http://188.166.216.153:8000/t/' + Thread.objects.get(pk=thread_pk).slug + '/' + thread_pk
+        inviter_email = user.User.objects.get(pk=user_id).email
+        subject = "Invitation For Discussion"
+        message = "Hello, You Got an invitaion to join the discussion for %s by %s" %(thread_url,inviter_email)
+        from_email =setting.EMAIL_HOST_USER
+        to_email = email_id
+        response = send_mail(subject, message, from_email, [to_email])
+        response_data = {}
+        if response == 1:
+            result = "True"
+        else:
+            result = "False"
+        response_data['result'] = result
+        return HttpResponse(json.dumps(response_data), status='200', content_type="application/json")
+
+    @detail_route(methods=['get', 'post'])
+    def report(self, thread_pk, type, user_id):
+        if type == "post":
+            report_type = "post"
+        elif type == "thread":
+            report_type = "thread"
+        response_data = {}
+        created = datetime.datetime.now()
+        updated = datetime.datetime.now()
+        try:
+            Report.objects.create(record_id=thread_pk, report_type=report_type,reporter_id=user_id,created_on= created,updated_on= updated)
+            response_data['result'] = "True"
+            response = HttpResponse(json.dumps(response_data), status='200', content_type="application/json")
+        except:
+            response_data['result'] = "False"
+            response = HttpResponse(json.dumps(response_data), status='400', content_type="application/json")
+        return response
+
+
+    @detail_route(methods=['get'])
+    def get_all_reports(self, user_id):
+        response_data = {}
+        # response_data = Report.objects.all()
+        data = serializers.serialize('json', Report.objects.all(),
+                                     fields=('id', 'reporter_id', 'report_type', 'record_id'))
+        response = HttpResponse(data, status='200', content_type="application/json")
+        return response
+
     @list_route(methods=['post'], url_path='merge')
     @transaction.atomic
     def threads_merge(self, request):
@@ -109,6 +166,8 @@ class ThreadViewSet(ViewSet):
     @list_route(methods=['get'])
     def editor(self, request):
         return thread_start_editor(request)
+
+    
 
 
 class PrivateThreadViewSet(ViewSet):
@@ -150,3 +209,5 @@ class PrivateThreadViewSet(ViewSet):
             })
         else:
             return Response(posting.errors, status=400)
+
+    

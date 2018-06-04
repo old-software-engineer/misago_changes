@@ -14,8 +14,8 @@ var tags_sting = ""
 export default class extends Form {
   constructor(props) {
     super(props);
-    for (var i=0; i < props.tags.results.length; i++) {
-        tags_sting = tags_sting + "#" + props.tags.results[i].tag_name
+    for (var i = 0; i < props.tags.results.length; i++) {
+      tags_sting = tags_sting + "#" + props.tags.results[i].tag_name
     }
     this.state = {
       isEditing: false,
@@ -66,7 +66,7 @@ export default class extends Form {
 
   send() {
     return ajax.patch(this.props.thread.api.index, [
-      {op: 'replace', path: 'title', value: this.state.title}
+      { op: 'replace', path: 'title', value: this.state.title }
     ]);
   }
 
@@ -89,8 +89,22 @@ export default class extends Form {
 
 
   render() {
+    const threadId = this.props.thread.id
+      const userId = this.props.user.id
 
-    const {thread, user} = this.props;
+    var reportDiv = {
+      height: '20px',
+      float: 'right',
+    }
+    var reportButton = {
+      backgroundColor: 'red',
+      borderBottomLeftRadius: '5px',
+      borderBottomRightRadius: '5px',
+      borderColor: 'red',
+      fontSize: '15px',
+      color: 'white'
+    }
+    const { thread, user } = this.props;
     const showModeration = !!user.id && isModerationVisible(thread);
 
     if (this.state.isEditing) {
@@ -140,40 +154,55 @@ export default class extends Form {
       );
     } else if (user.id && thread.acl.can_edit) {
       return (
-        <div className="page-header">
-          <Breadcrumbs path={thread.path} />
-          <div className="container">
-            <div className="row">
-              <div className={showModeration ? "col-sm-9 col-md-8" : "col-sm-10 col-md-10"}>
-                <h1>
-                  {thread.title}
-                </h1>
+        <div>
+          <div className="page-header">
+            <Breadcrumbs path={thread.path} />
+            <div className="container">
+              <div className="row">
+                <div className={showModeration ? "col-sm-9 col-md-8" : "col-sm-10 col-md-10"}>
+                  <h1>
+                    {thread.title}
+                  </h1>
 
-                <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags_sting}</h4>
-              </div>
-              <div className={showModeration ? "col-sm-3 col-md-4" : "col-sm-3 col-md-2"}>
-                <div className="row xs-margin-top md-margin-top-no">
-                  <div className={showModeration ? "col-xs-6" : "col-xs-12"}>
-                    <button
-                      className="btn btn-default btn-block btn-outline"
-                      onClick={this.onEdit}
-                      title={gettext("Edit title")}
-                      type="button"
-                    >
-                      <span className="material-icon">edit</span>
-                      <span className="hidden-sm">
-                        {gettext("Edit")}
-                      </span>
-                    </button>
+                  <h4 id={gettext("thread_tags")} style={{ color: "white" }}>{tags_sting}</h4>
+                </div>
+                <div className={showModeration ? "col-sm-3 col-md-4" : "col-sm-3 col-md-2"}>
+                  <div className="row xs-margin-top md-margin-top-no">
+                    <div className={showModeration ? "col-xs-6" : "col-xs-12"}>
+                      <button
+                        className="btn btn-default btn-block btn-outline"
+                        onClick={this.onEdit}
+                        title={gettext("Edit title")}
+                        type="button"
+                      >
+                        <span className="material-icon">edit</span>
+                        <span className="hidden-sm">
+                          {gettext("Edit")}
+                        </span>
+                      </button>
+                    </div>
+                    {showModeration && (
+                      <Moderation {...this.props} />
+                    )}
                   </div>
-                  {showModeration && (
-                    <Moderation {...this.props} />
-                  )}
                 </div>
               </div>
             </div>
+            <Stats thread={thread} />
           </div>
-          <Stats thread={thread} />
+          <div style={reportDiv}><button style={reportButton} onClick={() => {
+            $.ajax({
+              url: 'http://127.0.0.1:8000/api/threads/' + threadId + '/report/thread/' +userId,
+              dataType: "json",
+              type: 'get',
+              success: function (responseText) {
+                snackbar.success(gettext("Report has been sent."));
+              },
+              error: function (responseText) {
+                snackbar.error(gettext("Error sending report."));
+              }
+            });
+          }}>Report</button></div>
         </div>
       );
     } else if (showModeration) {
@@ -186,7 +215,7 @@ export default class extends Form {
                 <h1>
                   {thread.title}
                 </h1>
-                <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags_sting}</h4>
+                <h4 id={gettext("thread_tags")} style={{ color: "white" }}>{tags_sting}</h4>
               </div>
               <div className="col-sm-3 col-md-2">
                 <div className="row xs-margin-top md-margin-top-no">
@@ -208,7 +237,7 @@ export default class extends Form {
         <Breadcrumbs path={thread.path} />
         <div className="container">
           <h1>{thread.title}</h1>
-           <h4 id={gettext("thread_tags")} style={{color:"white"}}>{tags_sting}</h4>
+          <h4 id={gettext("thread_tags")} style={{ color: "white" }}>{tags_sting}</h4>
         </div>
         <Stats thread={thread} />
       </div>

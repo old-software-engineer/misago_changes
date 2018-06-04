@@ -5,6 +5,7 @@ import Subscription from './subscription';
 import posting from 'misago/services/posting';
 import Ajax from '../../services/ajax';
 import Button from "../button";
+import snackbar from 'misago/services/snackbar';
 
 export default function(props) {
     var padding = {
@@ -310,21 +311,16 @@ class Invite extends React.Component{
                   onClick={()=>{
                       var value = $("#email").val();
                       var values = {'email': value, 'threadId': this.props.threadId, 'userId': this.props.userId, 'url': location.href};
-                      //Ajax.post(,values)
-                      window.fetch('',{
-                        method: 'POST', // or 'PUT'
-                        body: JSON.stringify(values), // data can be `string` or {object}!
-                        headers:{
-                        'Content-Type': 'application/json'
-                        }
-                        }).then(res => res.json())
-                        .catch(error => {
-                            error(error)
-                            console.error('Error:', error)
-                        })
-                        .then(response => {
-                            alert('Success: ', response)
-                            console.log('Success:', response)
+                      $.ajax({
+                          url: 'http://127.0.0.1:8000/api/threads/'+this.props.threadId+'/send_email/'+value +'/'+ this.props.userId,
+                          dataType: "json",
+                          type: 'get',
+                          success: function(responseText) {
+                              snackbar.success(gettext("E-mail has been sent"));
+                           },
+                          error: function(responseText) {
+                              snackbar.error(gettext("Error sending E-mail"));
+                           }
                         });
                       this.setState({hasValue: false})
                   }}

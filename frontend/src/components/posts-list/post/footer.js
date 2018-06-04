@@ -4,8 +4,9 @@ import * as actions from './controls/actions';
 import LikesModal from 'misago/components/post-likes';
 import modal from 'misago/services/modal';
 import posting from 'misago/services/posting';
+import snackbar from 'misago/services/snackbar';
 
-export default function(props) {
+export default function (props) {
   if (!isVisible(props.post)) return null;
 
   return (
@@ -22,6 +23,7 @@ export default function(props) {
         likes={props.post.likes}
         {...props}
       />
+      <Report {...props} />
       <Reply {...props} />
       <Edit {...props} />
     </div>
@@ -278,5 +280,38 @@ export class Edit extends React.Component {
     } else {
       return null;
     }
+  }
+}
+
+class Report extends React.Component {
+  render() {
+    var reportButton = {
+      backgroundColor: 'red'
+    }
+
+    const threadId = this.props.thread.id
+      const userId = this.props.user.id
+
+    return (
+      <button
+        style={reportButton}
+        className="btn btn-primary btn-sm pull-right"
+        type="button"
+        onClick={() => {
+          $.ajax({
+            url: 'http://127.0.0.1:8000/api/threads/' + threadId + '/report/post/' + userId,
+            dataType: "json",
+            type: 'get',
+            success: function (responseText) {
+              snackbar.success(gettext("Report has been sent."));
+            },
+            error: function (responseText) {
+              snackbar.error(gettext("Error sending report."));
+            }
+          });
+        }}>
+        {gettext('Report')}
+      </button>
+    )
   }
 }

@@ -3,20 +3,25 @@ import React from 'react';
 import ReplyButton from './reply-button';
 import Subscription from './subscription';
 import posting from 'misago/services/posting';
+import Ajax from '../../services/ajax';
+import Button from "../button";
 
 export default function(props) {
+    var padding = {
+        paddingLeft: '0px',
+    }
   const hiddenSpecialOption = (!props.thread.acl.can_start_poll || props.thread.poll);
-
   return (
     <div className="row row-toolbar row-toolbar-bottom-margin">
       <GotoMenu {...props} />
       <div className="col-xs-9 col-md-5 col-md-offset-2">
-        <div className="row">
-          <Spacer visible={!props.user.id} />
-          <Spacer visible={hiddenSpecialOption} />
-          <SubscriptionMenu {...props} />
-          <StartPoll {...props} />
-          <Reply {...props} />
+        <div style={padding} className="row">
+            <Spacer visible={!props.user.id} />
+            <Spacer visible={hiddenSpecialOption} />
+            <SubscriptionMenu {...props} />
+            <StartPoll {...props} />
+            <Reply {...props} />
+            <Invite threadId={props.thread.id} userId={props.user.id} />
         </div>
       </div>
     </div>
@@ -282,4 +287,65 @@ export function Spacer(props) {
   return (
     <div className="col-sm-4 hidden-xs"/>
   );
+}
+
+
+class Invite extends React.Component{
+    constructor(){
+        super();
+        this.state={
+            hasValue: false,
+        };
+    }
+    render(){
+         var divStyle = {
+            paddingLeft: '17px'
+        };
+        if(this.state.hasValue){
+            return(
+                <div className='hidden-xs' style={divStyle}>
+                    <input id='email' className='form-control' type='text' placeholder='Enter e-mail address' />
+                    <button
+                  className="btn btn-aligned"
+                  onClick={()=>{
+                      var value = $("#email").val();
+                      var values = {'email': value, 'threadId': this.props.threadId, 'userId': this.props.userId, 'url': location.href};
+                      //Ajax.post(,values)
+                      window.fetch('',{
+                        method: 'POST', // or 'PUT'
+                        body: JSON.stringify(values), // data can be `string` or {object}!
+                        headers:{
+                        'Content-Type': 'application/json'
+                        }
+                        }).then(res => res.json())
+                        .catch(error => {
+                            error(error)
+                            console.error('Error:', error)
+                        })
+                        .then(response => {
+                            alert('Success: ', response)
+                            console.log('Success:', response)
+                        });
+                      this.setState({hasValue: false})
+                  }}
+                  type="button">
+
+                  {gettext("Send Mail")}
+                </button>
+                </div>
+            )
+        }
+        else {
+            return(
+            <div className='col-sm-4 hidden-xs'>
+                <button
+                  className="btn btn-aligned"
+                  onClick={()=>{this.setState({hasValue: true})}}
+                  type="button">
+                  {gettext("Invite")}
+                </button>
+            </div>
+        );
+        }
+    }
 }

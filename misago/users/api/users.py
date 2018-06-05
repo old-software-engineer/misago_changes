@@ -36,6 +36,7 @@ from .userendpoints.list import list_endpoint
 from .userendpoints.signature import signature_endpoint
 from .userendpoints.username import moderate_username_endpoint, username_endpoint
 
+from misago.threads.models import UserInvitation
 
 UserModel = get_user_model()
 
@@ -304,6 +305,12 @@ class UserViewSet(viewsets.GenericViewSet):
         feed = UserPosts(request, profile, page)
 
         return Response(feed.get_frontend_context())
+
+    @detail_route(methods=['post','get'])
+    def invitations(self,user_id, pk=None):
+        count = UserInvitation.objects.all().filter(invitor_id=user_id).count()
+        response = HttpResponse(json.dumps(count=count), status='200', content_type="application/json")
+        return response
 
 
 UserProfileSerializer = UserSerializer.subset_fields(

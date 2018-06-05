@@ -10,4 +10,4 @@ from .poll import Poll
 from .pollvote import PollVote
 from .tags import Tag
 from .report import Report
-from .user_invitation import UserInvitation
+from .userinvitation import UserInvitation

@@ -21,6 +21,7 @@
 <th style="width: 150px;">{% trans "Rank" %}</th>
 <th style="width: 200px;">{% trans "Joined" %}</th>
 <th style="width: 128px;">{% trans "Posts" %}</th>
+<th style="width: 128px;">Reports</th>
 {% for action in extra_actions %}
 <th style="width: 1%;">&nbsp;</th>
 {% endfor %}
@@ -35,7 +36,7 @@
   </a>
 </td>
 <td class="item-name {% if item.requires_activation %}text-muted{% endif %}">
-  {% if item.is_deleting_account %}
+    {% if item.is_deleting_account %}
     <a href="{{ item.get_absolute_url }}" title="{% trans "Is deleting their account" %}">
       <del>{{ item }}</del>
     </a>
@@ -78,6 +79,9 @@
 </td>
 <td>
   {{ item.posts }}
+</td>
+<td>
+  {{item.userinvitation_set.count }}
 </td>
 {% for action in extra_actions %}
 <td class="row-action">

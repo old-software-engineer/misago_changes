@@ -39,7 +39,7 @@ export function getIcon(subscription) {
 
 export function getLabel(subscription) {
   if (subscription === true) {
-    return gettext("E-mail");
+    return gettext("Follow");
   } else if (subscription === false) {
     return gettext("Enabled");
   } else {

@@ -30,6 +30,8 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from misago.users.models import user
 from misago.threads.models import Report
+from misago.threads.models import UserInvitation
+from misago.users.models import User
 import datetime
 from django.core import serializers
 import devproject.settings as setting
@@ -119,9 +121,17 @@ class ThreadViewSet(ViewSet):
         inviter_email = user.User.objects.get(pk=user_id).email
         subject = "Invitation For Discussion"
         message = "Hello, You Got an invitaion to join the discussion for %s by %s" %(thread_url,inviter_email)
-        from_email =setting.EMAIL_HOST_USER
+        from_email = setting.EMAIL_HOST_USER
         to_email = email_id
-        response = send_mail(subject, message, from_email, [to_email])
+        created = datetime.datetime.now()
+        updated = datetime.datetime.now()
+        try:
+            User.objects.get(pk=user_id).userinvitation_set.create(invited_email=email_id, created_on=created, updated_on=updated)
+            # UserInvitation.objects.create(invited_email=email_id, invitor_id=user_id, created_on=created, updated_on=updated)
+            response = send_mail(subject, message, from_email, [to_email])
+        except:
+            response = 0;
+
         response_data = {}
         if response == 1:
             result = "True"
@@ -152,10 +162,17 @@ class ThreadViewSet(ViewSet):
     @detail_route(methods=['get'])
     def get_all_reports(self, user_id):
         response_data = {}
-        # response_data = Report.objects.all()
-        data = serializers.serialize('json', Report.objects.all(),
-                                     fields=('id', 'reporter_id', 'report_type', 'record_id'))
-        response = HttpResponse(data, status='200', content_type="application/json")
+        result = {}
+        count = 0
+        reports = Report.objects.all().order_by('-created_on')[:20]
+        for report in reports:
+            response_data["reported_by"] = report.reporter_id
+            response_data["report_type"] = report.report_type
+            response_data["report_id"] = report.record_id
+            result[count] = response_data
+            count = count + 1
+            response_data = {}
+        response = HttpResponse(json.dumps(result), status='200', content_type="application/json")
         return response
 
     @list_route(methods=['post'], url_path='merge')

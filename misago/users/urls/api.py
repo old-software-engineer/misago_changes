@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from misago.core.apirouter import MisagoApiRouter
-from misago.users.api import auth, captcha, mention
+from misago.users.api import auth, captcha, mention, users
 from misago.users.api.ranks import RanksViewSet
 from misago.users.api.usernamechanges import UsernameChangesViewSet
 from misago.users.api.users import UserViewSet
@@ -19,6 +19,7 @@ urlpatterns = [
     ),
     url(r'^captcha-question/$', captcha.question, name='captcha-question'),
     url(r'^mention/$', mention.mention_suggestions, name='mention-suggestions'),
+    url(r'^invitation/(?P<user_id>[^/.]+)', users.UserViewSet.invitations, name='user-invitations'),
 ]
 
 router = MisagoApiRouter()

@@ -7,22 +7,24 @@ import Ajax from '../../services/ajax';
 import Button from "../button";
 import snackbar from 'misago/services/snackbar';
 
-export default function(props) {
-    var padding = {
-        paddingLeft: '0px',
-    }
+export default function (props) {
+  var padding = {
+    paddingLeft: '0px',
+  }
   const hiddenSpecialOption = (!props.thread.acl.can_start_poll || props.thread.poll);
   return (
     <div className="row row-toolbar row-toolbar-bottom-margin">
       <GotoMenu {...props} />
       <div className="col-xs-9 col-md-5 col-md-offset-2">
         <div style={padding} className="row">
-            <Spacer visible={!props.user.id} />
-            <Spacer visible={hiddenSpecialOption} />
-            <SubscriptionMenu {...props} />
-            <StartPoll {...props} />
-            <Reply {...props} />
+          <Spacer visible={!props.user.id} />
+          <Spacer visible={hiddenSpecialOption} />
+          <SubscriptionMenu {...props} />
+          <StartPoll {...props} />
+          <Reply {...props} />
+          <div style={{ marginTop: 40, }}>
             <Invite threadId={props.thread.id} userId={props.user.id} />
+          </div>
         </div>
       </div>
     </div>
@@ -286,62 +288,77 @@ export function Spacer(props) {
   if (!props.visible) return null;
 
   return (
-    <div className="col-sm-4 hidden-xs"/>
+    <div className="col-sm-4 hidden-xs" />
   );
 }
 
 
-class Invite extends React.Component{
-    constructor(){
-        super();
-        this.state={
-            hasValue: false,
-        };
-    }
-    render(){
-         var divStyle = {
-            paddingLeft: '17px'
-        };
-        if(this.state.hasValue){
-            return(
-                <div className='hidden-xs' style={divStyle}>
-                    <input id='email' className='form-control' type='text' placeholder='Enter e-mail address' />
-                    <button
-                  className="btn btn-aligned"
-                  onClick={()=>{
-                      var value = $("#email").val();
-                      var values = {'email': value, 'threadId': this.props.threadId, 'userId': this.props.userId, 'url': location.href};
-                      $.ajax({
-                          url: 'http://127.0.0.1:8000/api/threads/'+this.props.threadId+'/send_email/'+value +'/'+ this.props.userId,
-                          dataType: "json",
-                          type: 'get',
-                          success: function(responseText) {
-                              snackbar.success(gettext("E-mail has been sent"));
-                           },
-                          error: function(responseText) {
-                              snackbar.error(gettext("Error sending E-mail"));
-                           }
-                        });
-                      this.setState({hasValue: false})
-                  }}
-                  type="button">
+class Invite extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      hasValue: false,
+    };
+  }
+  render() {
+    var divStyle = {
+      paddingLeft: '17px'
+    };
+    if (this.state.hasValue) {
+      return (
+        <div className='hidden-xs' style={divStyle}>
+          <input id='email' className='form-control' type='text' placeholder='Enter e-mail address' />
+          <button
+            style={{
+                borderBottomLeftRadius: '5px',
+                borderBottomRightRadius: '5px',
+                marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: 'green', width: 130, borderColor: 'green' }}
+            className="btn btn-primary btn-outline"
+            onClick={() => {
+              var value = $("#email").val();
+              var values = { 'email': value, 'threadId': this.props.threadId, 'userId': this.props.userId, 'url': location.href };
+              $.ajax({
+                url: 'http://127.0.0.1:8000/api/threads/' + this.props.threadId + '/send_email/' + value + '/' + this.props.userId,
+                dataType: "json",
+                type: 'get',
+                success: function (responseText) {
+                  snackbar.success(gettext("E-mail has been sent"));
+                },
+                error: function (responseText) {
+                  snackbar.error(gettext("Error sending E-mail"));
+                }
+              });
+              this.setState({ hasValue: false })
+            }}
+            type="button">
 
-                  {gettext("Send Mail")}
+            {gettext("Send Mail")}
+          </button>
+            <button
+                style={{
+                    borderBottomLeftRadius: '5px',
+                    borderBottomRightRadius: '5px',
+                    borderColor: 'red',
+                    marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: 'red', width: 130, borderColor: 'green' }}
+                    className="btn btn-primary btn-outline"
+                    onClick={() =>{this.setState({hasValue: false})}}>
+                    {gettext('Cancel')}
                 </button>
-                </div>
-            )
-        }
-        else {
-            return(
-            <div className='col-sm-4 hidden-xs'>
-                <button
-                  className="btn btn-aligned"
-                  onClick={()=>{this.setState({hasValue: true})}}
-                  type="button">
-                  {gettext("Invite")}
-                </button>
-            </div>
-        );
-        }
+        </div>
+      )
     }
+    else {
+      return (
+        <div className='col-sm-4 hidden-xs'>
+          <button
+            style={{ backgroundColor: 'green', width: 130, borderColor: 'green' }}
+            className="btn btn-primary btn-outline"
+            onClick={() => { this.setState({ hasValue: true }) }}
+            type="button">
+            {gettext("Invite")}
+          </button>
+        </div>
+      );
+    }
+  }
 }

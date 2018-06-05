@@ -19,7 +19,16 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8">
-        <div id="admin-content-index"></div>
+      <div id="admin-content-index">
+        <table title="Reports" id='report-table'>
+            <tr>
+              <th>Record Id</th>
+              <th>Report Type</th>
+              <th>Reporter Id</th>
+            </tr>
+            <tbody id="table_notification"></tbody>
+          </table>
+      </div>
     </div>
     <div class="col-md-4">
 
@@ -104,6 +113,9 @@
     </div>
   </div>
 </div>
+<script>
+
+</script>
 {% endblock content %}
 
 
@@ -134,5 +146,29 @@
       return false;
     });
   });
+
+  $( document ).ready(function() {
+    populateNotifications();
+});
+function populateNotifications() {
+    var data =[]
+    $.ajax({
+        url: 'http://127.0.0.1:8000/api/threads/1/get_all_reports/',
+        dataType: "json",
+        type: 'get',
+        success: function (responseText) {
+            for (var record in responseText) {
+                id = "<td>"+responseText[record].report_id+"</td>"
+                type = "<td>"+responseText[record].report_type+"</td>"
+                user_id = "<td>"+responseText[record].reported_by+"</td>"
+                row = "<tr>"+id+ type + user_id +"</tr>"
+                $("#table_notification").append(row)
+            }
+        },
+        error: function (responseText) {
+            console.log(responseText)
+        }
+    });
+}
 </script>
 {% endblock javascripts %}

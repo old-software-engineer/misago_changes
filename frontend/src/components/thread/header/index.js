@@ -202,7 +202,7 @@ export default class extends Form {
                 snackbar.error(gettext("Error sending report."));
               }
             });
-          }}>Report</button></div>
+          }}>Report question</button></div>
         </div>
       );
     } else if (showModeration) {

@@ -68,7 +68,7 @@ export function Label({ moderation, subscription }) {
 
   let text = gettext("Disabled");
   if (subscription === true) {
-    text = gettext("E-mail");
+    text = gettext("Follow");
   } else if (subscription === false) {
     text = gettext("Enabled");
   }

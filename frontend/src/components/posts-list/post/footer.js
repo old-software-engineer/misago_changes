@@ -136,23 +136,25 @@ export class Likes extends React.Component {
 
   render() {
     const hasLikes = (this.props.post.last_likes || []).length > 0;
-    if (!this.props.post.acl.can_see_likes || !hasLikes) return null;
+    //if (!this.props.post.acl.can_see_likes || !hasLikes) return null;
 
-    if (this.props.post.acl.can_see_likes === 2) {
+    //if (this.props.post.acl.can_see_likes === 2) {
       return (
         <button
           className="btn btn-link btn-sm pull-left hidden-xs"
           onClick={this.onClick}
           type="button"
         >
-          {getLikesMessage(this.props.likes, this.props.lastLikes)}
+          {/*{getLikesMessage(this.props.likes, this.props.lastLikes)}*/}
+          {gettext(this.props.likes+" Upvotes")}
         </button>
       );
-    }
+    //}
 
     return (
       <p className="pull-left hidden-xs">
-        {getLikesMessage(this.props.likes, this.props.lastLikes)}
+        {/*{getLikesMessage(this.props.likes, this.props.lastLikes)}*/}
+        {gettext(this.props.likes+" Upvotes")}
       </p>
     );
   }
@@ -193,7 +195,7 @@ export function getLikesMessage(likes, users) {
   const usernames = users.slice(0, 3).map((u) => u.username);
 
   if (usernames.length == 1) {
-    return interpolate(gettext("%(user)s upvoted this."), {
+    return interpolate(gettext("%(usernames.length) upvoted this."), {
       user: usernames[0]
     }, true);
   }
@@ -289,9 +291,8 @@ class Report extends React.Component {
       backgroundColor: 'red'
     }
 
-    const threadId = this.props.thread.id
-      const userId = this.props.user.id
-
+    const postId = this.props.post.id
+    const userId = this.props.user.id
     return (
       <button
         style={reportButton}
@@ -299,7 +300,7 @@ class Report extends React.Component {
         type="button"
         onClick={() => {
           $.ajax({
-            url: 'http://127.0.0.1:8000/api/threads/' + threadId + '/report/post/' + userId,
+            url: 'http://127.0.0.1:8000/api/threads/' + postId + '/report/post/' + userId,
             dataType: "json",
             type: 'get',
             success: function (responseText) {
@@ -310,7 +311,7 @@ class Report extends React.Component {
             }
           });
         }}>
-        {gettext('Report')}
+        {gettext('Report answer')}
       </button>
     )
   }

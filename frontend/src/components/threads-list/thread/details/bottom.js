@@ -128,8 +128,8 @@ export function BestAnswerLabel({ thread }) {
 
 export function RepliesLabel({ replies, forceFullText }) {
   const text = ngettext(
-    "%(replies)s reply",
-    "%(replies)s replies",
+    "%(replies)s answer",
+    "%(replies)s answers",
     replies);
 
   let compactClassName = '';

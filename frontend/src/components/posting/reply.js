@@ -15,6 +15,7 @@ export default class extends Form {
     super(props);
 
     this.state = {
+        submit: '',
       isReady: false,
       isLoading: false,
       isErrored: false,
@@ -46,8 +47,14 @@ export default class extends Form {
   loadSuccess = (data) => {
     this.setState({
       isReady: true,
-
       post: data.post ? ('[quote="@' +  data.poster + '"]\n' + data.post + '\n[/quote]') : ''
+    }, () => {
+        if(this.state.post){
+            this.setState({submit: 'Post Comment'})
+        }
+        else {
+            this.setState({submit: 'Post Answer'})
+        }
     });
   };
 
@@ -152,7 +159,8 @@ export default class extends Form {
                   onAttachmentsChange={this.onAttachmentsChange}
                   onCancel={this.onCancel}
                   onChange={this.onPostChange}
-                  submitLabel={gettext("Post answer")}
+                  // submitLabel={gettext("Post answer")}
+                  submitLabel={gettext(this.state.submit)}
                   value={this.state.post}
                 />
 

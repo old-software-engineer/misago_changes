@@ -198,9 +198,6 @@ export default class extends Form {
             </div>
             <Stats thread={thread} parentProps={this.props} />
           </div>
-          <div style={reportDiv}><button style={reportButton} onClick={() => {
-
-          }}>Report question</button></div>
         </div>
       );
     } else if (showModeration) {

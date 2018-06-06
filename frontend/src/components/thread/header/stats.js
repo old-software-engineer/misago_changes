@@ -1,6 +1,7 @@
 /* jshint ignore:start */
 import React from 'react';
 import escapeHtml from 'misago/utils/escape-html';
+import snackbar from "../../../services/snackbar";
 
 const LAST_POSTER_URL = '<a href="%(url)s" class="poster-title">%(user)s</a>';
 const LAST_POSTER_SPAN = '<span class="poster-title">%(user)s</span>';
@@ -123,6 +124,107 @@ export function LastReply(props) {
   return <li className="thread-last-reply" dangerouslySetInnerHTML={{__html: message}}/>;
 }
 
+export function Report(props){
+    const threadId = props.thread.thread.id;
+    const userId = props.thread.parentProps.user.id;
+    return(
+      <li style={{cursor: 'pointer'}}>
+          <span className='material-icon'>
+              flag
+          </span>
+          <span className='icon-legend'>
+              <a className='poster-title' onClick={() => {
+                  $.ajax({
+              url: '/api/threads/' + threadId + '/report/thread/' +userId,
+              dataType: "json",
+              type: 'get',
+              success: function (responseText) {
+                snackbar.success(gettext("Report has been sent."));
+              },
+              error: function (responseText) {
+                snackbar.error(gettext("Error sending report."));
+              }
+            });
+              }}>
+                Report
+              </a>
+          </span>
+      </li>
+    );
+}
+
+class Share extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            hasValue: false,
+        };
+    }
+    render(){
+        const threadId = this.props.thread.parentProps.thread.id;
+        const userId = this.props.thread.parentProps.user.id;
+        if(this.state.hasValue){
+            return(
+                <li>
+                    <span>
+                        <input className='form-control' type='email' id='email' placeholder='Enter e-mail address' />
+                        <button
+                            style={{
+                                borderBottomLeftRadius: '5px',
+                                borderBottomRightRadius: '5px',
+                                marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: 'green', width: 130, borderColor: 'green' }}
+                            onClick={ () => {
+                            let value =  $("#email").val();
+                            $.ajax({
+                                url: '/api/threads/' + threadId + '/send_email/' + value + '/' + userId,
+                                dataType: "json",
+                                type: 'get',
+                                success: function (responseText) {
+                                  snackbar.success(gettext("E-mail has been sent"));
+                                },
+                                error: function (responseText) {
+                                  snackbar.error(gettext("Error sending E-mail"));
+                                }
+                            });
+                            this.setState({hasValue: false})
+                        }}>
+                            Share Post
+                        </button>
+                        <button
+                        style={{
+                            borderBottomLeftRadius: '5px',
+                            borderBottomRightRadius: '5px',
+                            borderColor: 'red',
+                            marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: 'red', width: 130 }}
+                            onClick={() => {
+                                this.setState({hasValue: false})
+                            }}>
+                            Cancel
+                        </button>
+                    </span>
+                </li>
+            )
+        }
+        else {
+            return(
+              <li style={{cursor: "pointer"}}>
+                  <span className='material-icon'>
+                      share
+                  </span>
+                  <span className='icon-legend'>
+                      <a onClick={() => {
+                          this.setState({hasValue: true})
+                  }}>
+                      Share
+                  </a>
+                  </span>
+              </li>
+            );
+        }
+    }
+}
+
+
 export default function(props) {
   return (
     <div className="header-stats">
@@ -133,6 +235,8 @@ export default function(props) {
           <IsHidden thread={props.thread} />
           <IsClosed thread={props.thread} />
           <Replies thread={props.thread} />
+          <Report thread={props} />
+          <Share thread={props} />
           <LastReply thread={props.thread} />
         </ul>
       </div>

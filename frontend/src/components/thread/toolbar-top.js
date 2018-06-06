@@ -22,9 +22,6 @@ export default function (props) {
           <SubscriptionMenu {...props} />
           <StartPoll {...props} />
           <Reply {...props} />
-          <div style={{ marginTop: 40, }}>
-            <Invite threadId={props.thread.id} userId={props.user.id} />
-          </div>
         </div>
       </div>
     </div>
@@ -293,72 +290,3 @@ export function Spacer(props) {
 }
 
 
-class Invite extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      hasValue: false,
-    };
-  }
-  render() {
-    var divStyle = {
-      paddingLeft: '17px'
-    };
-    if (this.state.hasValue) {
-      return (
-        <div className='hidden-xs' style={divStyle}>
-          <input id='email' className='form-control' type='text' placeholder='Enter e-mail address' />
-          <button
-            style={{
-                borderBottomLeftRadius: '5px',
-                borderBottomRightRadius: '5px',
-                marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: 'green', width: 130, borderColor: 'green' }}
-            className="btn btn-primary btn-outline"
-            onClick={() => {
-              var value = $("#email").val();
-              var values = { 'email': value, 'threadId': this.props.threadId, 'userId': this.props.userId, 'url': location.href };
-              $.ajax({
-                url: '/api/threads/' + this.props.threadId + '/send_email/' + value + '/' + this.props.userId,
-                dataType: "json",
-                type: 'get',
-                success: function (responseText) {
-                  snackbar.success(gettext("E-mail has been sent"));
-                },
-                error: function (responseText) {
-                  snackbar.error(gettext("Error sending E-mail"));
-                }
-              });
-              this.setState({ hasValue: false })
-            }}
-            type="button">
-
-            {gettext("Send Mail")}
-          </button>
-            <button
-                style={{
-                    borderBottomLeftRadius: '5px',
-                    borderBottomRightRadius: '5px',
-                    borderColor: 'red',
-                    marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: 'red', width: 130, borderColor: 'green' }}
-                    className="btn btn-primary btn-outline"
-                    onClick={() =>{this.setState({hasValue: false})}}>
-                    {gettext('Cancel')}
-                </button>
-        </div>
-      )
-    }
-    else {
-      return (
-        <div className='col-sm-4 hidden-xs'>
-          <button
-            style={{ backgroundColor: 'green', width: 130, borderColor: 'green' }}
-            className="btn btn-primary btn-outline"
-            onClick={() => { this.setState({ hasValue: true }) }}
-            type="button">
-            {gettext("Invite")}
-          </button>
-        </div>
-      );
-    }
-  }
-}

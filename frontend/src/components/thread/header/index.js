@@ -14,6 +14,7 @@ var tags_sting = ""
 export default class extends Form {
   constructor(props) {
     super(props);
+    console.log(props);
     for (var i = 0; i < props.tags.results.length; i++) {
       tags_sting = tags_sting + "#" + props.tags.results[i].tag_name
     }
@@ -149,7 +150,7 @@ export default class extends Form {
               </form>
             </div>
           </div>
-          <Stats thread={thread} />
+          <Stats thread={thread} parentProps={this.props} />
         </div>
       );
     } else if (user.id && thread.acl.can_edit) {
@@ -164,7 +165,14 @@ export default class extends Form {
                     {thread.title}
                   </h1>
 
-                  <h4 id={gettext("thread_tags")} style={{ color: "white" }}>{tags_sting}</h4>
+                  <h6 id={gettext("thread_tags")} style={{color: "white" }}>{
+                      this.props.tags.results.map((key, index) => (
+                         <button
+                             className="hidden-xs btn btn-default btn-sm pull-left"
+                             style={{marginRight: 4,borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}
+                         ><span style={{color: 'black'}}>{key.tag_name}</span></button>
+                      ))
+                  }</h6>
                 </div>
                 <div className={showModeration ? "col-sm-3 col-md-4" : "col-sm-3 col-md-2"}>
                   <div className="row xs-margin-top md-margin-top-no">
@@ -188,20 +196,10 @@ export default class extends Form {
                 </div>
               </div>
             </div>
-            <Stats thread={thread} />
+            <Stats thread={thread} parentProps={this.props} />
           </div>
           <div style={reportDiv}><button style={reportButton} onClick={() => {
-            $.ajax({
-              url: '/api/threads/' + threadId + '/report/thread/' +userId,
-              dataType: "json",
-              type: 'get',
-              success: function (responseText) {
-                snackbar.success(gettext("Report has been sent."));
-              },
-              error: function (responseText) {
-                snackbar.error(gettext("Error sending report."));
-              }
-            });
+
           }}>Report question</button></div>
         </div>
       );
@@ -215,7 +213,14 @@ export default class extends Form {
                 <h1>
                   {thread.title}
                 </h1>
-                <h4 id={gettext("thread_tags")} style={{ color: "white" }}>{tags_sting}</h4>
+                <h6 id={gettext("thread_tags")} style={{color: "white" }}>{
+                    this.props.tags.results.map((key, index) => (
+                         <button
+                             className="hidden-xs btn btn-default btn-sm pull-left"
+                             style={{marginRight:4, borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}
+                         ><span style={{color: 'black'}}>{key.tag_name}</span></button>
+                      ))
+                }</h6>
               </div>
               <div className="col-sm-3 col-md-2">
                 <div className="row xs-margin-top md-margin-top-no">
@@ -227,7 +232,7 @@ export default class extends Form {
               </div>
             </div>
           </div>
-          <Stats thread={thread} />
+          <Stats thread={thread} parentProps={this.props} />
         </div>
       );
     }
@@ -237,9 +242,16 @@ export default class extends Form {
         <Breadcrumbs path={thread.path} />
         <div className="container">
           <h1>{thread.title}</h1>
-          <h4 id={gettext("thread_tags")} style={{ color: "white" }}>{tags_sting}</h4>
+          <h6 id={gettext("thread_tags")} style={{ color: "white" }}>{
+              this.props.tags.results.map((key, index) => (
+                         <button
+                             className="hidden-xs btn btn-default btn-sm pull-left"
+                             style={{ marginRight: 4,borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}
+                         ><span style={{color: 'black'}}>{key.tag_name}</span></button>
+                      ))
+          }</h6>
         </div>
-        <Stats thread={thread} />
+        <Stats thread={thread} parentProps={this.props} />
       </div>
     );
   }

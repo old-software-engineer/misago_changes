@@ -167,7 +167,7 @@ export default class extends Form {
     }
 
     if ((!this.state.post.trim().length)){
-        this.state.post= "&nbsp;"
+        this.setState({post: ''})
     }
 
     if (!this.state.post.trim().length) {

@@ -115,7 +115,7 @@ export default class extends React.Component {
     };
 
     const formErrors = this.state.errors || {};
-    formErrors[name] = this.validateField(name, newState[name]);
+    //formErrors[name] = this.validateField(name, newState[name]);
     newState.errors = formErrors;
 
     this.setState(newState);

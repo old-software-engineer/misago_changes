@@ -24,6 +24,7 @@ export default function (props) {
         {...props}
       />
       <Report {...props} />
+      <Share {...props} />
       <Reply {...props} />
       <Edit {...props} />
     </div>
@@ -287,16 +288,12 @@ export class Edit extends React.Component {
 
 class Report extends React.Component {
   render() {
-    var reportButton = {
-      backgroundColor: 'red'
-    }
-
     const postId = this.props.post.id
     const userId = this.props.user.id
     return (
       <button
-        style={reportButton}
-        className="btn btn-primary btn-sm pull-right"
+          style={{hover:{backgroundColor: 'red'}}}
+        className="btn btn-link btn-sm pull-left hidden-xs"
         type="button"
         onClick={() => {
           $.ajax({
@@ -311,8 +308,22 @@ class Report extends React.Component {
             }
           });
         }}>
+          <span className='material-icon'>
+            flag
+        </span>
         {gettext('Report answer')}
       </button>
     )
+  }
+}
+
+class Share extends React.Component{
+  render(){
+    return(
+      <button className="btn btn-link btn-sm pull-left hidden-xs">
+        <span className='material-icon'>share</span>
+        Share
+      </button>
+    );
   }
 }

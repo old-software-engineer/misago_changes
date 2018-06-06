@@ -143,9 +143,9 @@ class ThreadViewSet(ViewSet):
     @detail_route(methods=['get', 'post'])
     def report(self, thread_pk, type, user_id):
         if type == "post":
-            report_type = "post"
+            report_type = "answer"
         elif type == "thread":
-            report_type = "thread"
+            report_type = "question"
         response_data = {}
         created = datetime.datetime.now()
         updated = datetime.datetime.now()

@@ -300,7 +300,7 @@ class Report extends React.Component {
         type="button"
         onClick={() => {
           $.ajax({
-            url: 'http://127.0.0.1:8000/api/threads/' + postId + '/report/post/' + userId,
+            url: '/api/threads/' + postId + '/report/post/' + userId,
             dataType: "json",
             type: 'get',
             success: function (responseText) {

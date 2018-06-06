@@ -318,7 +318,7 @@ class Invite extends React.Component {
               var value = $("#email").val();
               var values = { 'email': value, 'threadId': this.props.threadId, 'userId': this.props.userId, 'url': location.href };
               $.ajax({
-                url: 'http://127.0.0.1:8000/api/threads/' + this.props.threadId + '/send_email/' + value + '/' + this.props.userId,
+                url: '/api/threads/' + this.props.threadId + '/send_email/' + value + '/' + this.props.userId,
                 dataType: "json",
                 type: 'get',
                 success: function (responseText) {

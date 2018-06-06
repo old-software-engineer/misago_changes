@@ -192,7 +192,7 @@ export default class extends Form {
           </div>
           <div style={reportDiv}><button style={reportButton} onClick={() => {
             $.ajax({
-              url: 'http://127.0.0.1:8000/api/threads/' + threadId + '/report/thread/' +userId,
+              url: '/api/threads/' + threadId + '/report/thread/' +userId,
               dataType: "json",
               type: 'get',
               success: function (responseText) {

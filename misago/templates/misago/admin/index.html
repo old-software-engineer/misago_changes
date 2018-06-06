@@ -22,9 +22,9 @@
       <div id="admin-content-index">
         <table title="Reports" id='report-table'>
             <tr>
-              <th>Record Id</th>
+              <th>Report Link</th>
               <th>Report Type</th>
-              <th>Reporter Id</th>
+              <th>Reporter</th>
             </tr>
             <tbody id="table_notification"></tbody>
           </table>
@@ -158,7 +158,7 @@ function populateNotifications() {
         type: 'get',
         success: function (responseText) {
             for (var record in responseText) {
-                id = "<td>"+responseText[record].report_id+"</td>"
+                id = "<td>"+ "<a href=/t"+responseText[record].report_id+">" + responseText[record].report_id + "</a>"+"</td>"
                 type = "<td>"+responseText[record].report_type+"</td>"
                 user_id = "<td>"+responseText[record].reported_by+"</td>"
                 row = "<tr>"+id+ type + user_id +"</tr>"

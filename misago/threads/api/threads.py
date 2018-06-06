@@ -35,6 +35,7 @@ from misago.users.models import User
 import datetime
 from django.core import serializers
 import devproject.settings as setting
+from django.utils import timezone
 
 class ViewSet(viewsets.ViewSet):
     thread = None
@@ -115,65 +116,7 @@ class ThreadViewSet(ViewSet):
         thread = self.get_thread(request, pk).unwrap()
         return thread_merge_endpoint(request, thread, self.thread)
 
-    @detail_route(methods=['get', 'post'])
-    def send_email(self, thread_pk, email_id, user_id):
-        thread_url =thread_url ='http://188.166.216.153:8000/t/' + Thread.objects.get(pk=thread_pk).slug + '/' + thread_pk
-        inviter_email = user.User.objects.get(pk=user_id).email
-        subject = "Invitation For Discussion"
-        message = "Hello, You Got an invitaion to join the discussion for %s by %s" %(thread_url,inviter_email)
-        from_email = setting.EMAIL_HOST_USER
-        to_email = email_id
-        created = datetime.datetime.now()
-        updated = datetime.datetime.now()
-        try:
-            User.objects.get(pk=user_id).userinvitation_set.create(invited_email=email_id, created_on=created, updated_on=updated)
-            # UserInvitation.objects.create(invited_email=email_id, invitor_id=user_id, created_on=created, updated_on=updated)
-            response = send_mail(subject, message, from_email, [to_email])
-        except:
-            response = 0;
 
-        response_data = {}
-        if response == 1:
-            result = "True"
-        else:
-            result = "False"
-        response_data['result'] = result
-        return HttpResponse(json.dumps(response_data), status='200', content_type="application/json")
-
-    @detail_route(methods=['get', 'post'])
-    def report(self, thread_pk, type, user_id):
-        if type == "post":
-            report_type = "answer"
-        elif type == "thread":
-            report_type = "question"
-        response_data = {}
-        created = datetime.datetime.now()
-        updated = datetime.datetime.now()
-        try:
-            Report.objects.create(record_id=thread_pk, report_type=report_type,reporter_id=user_id,created_on= created,updated_on= updated)
-            response_data['result'] = "True"
-            response = HttpResponse(json.dumps(response_data), status='200', content_type="application/json")
-        except:
-            response_data['result'] = "False"
-            response = HttpResponse(json.dumps(response_data), status='400', content_type="application/json")
-        return response
-
-
-    @detail_route(methods=['get'])
-    def get_all_reports(self, user_id):
-        response_data = {}
-        result = {}
-        count = 0
-        reports = Report.objects.all().order_by('-created_on')[:20]
-        for report in reports:
-            response_data["reported_by"] = report.reporter_id
-            response_data["report_type"] = report.report_type
-            response_data["report_id"] = report.record_id
-            result[count] = response_data
-            count = count + 1
-            response_data = {}
-        response = HttpResponse(json.dumps(result), status='200', content_type="application/json")
-        return response
 
     @list_route(methods=['post'], url_path='merge')
     @transaction.atomic
@@ -184,7 +127,7 @@ class ThreadViewSet(ViewSet):
     def editor(self, request):
         return thread_start_editor(request)
 
-    
+
 
 
 class PrivateThreadViewSet(ViewSet):
@@ -228,3 +171,74 @@ class PrivateThreadViewSet(ViewSet):
             return Response(posting.errors, status=400)
 
     
+@detail_route(methods=['get', 'post'])
+def report(self, thread_pk, type, user_id):
+    if type == "post":
+        report_type = "answer"
+    elif type == "thread":
+        report_type = "question"
+    response_data = {}
+    created = datetime.datetime.now()
+    updated = datetime.datetime.now()
+    try:
+        Report.objects.create(record_id=thread_pk, report_type=report_type,reporter_id=user_id,created_on= created,updated_on= updated)
+        response_data['result'] = "True"
+        response = HttpResponse(json.dumps(response_data), status='200', content_type="application/json")
+    except:
+        response_data['result'] = "False"
+        response = HttpResponse(json.dumps(response_data), status='400', content_type="application/json")
+    return response
+
+
+@detail_route(methods=['get'])
+def get_all_reports(self, user_id):
+    response_data = {}
+    result = {}
+    count = 0
+    reports = Report.objects.all().order_by('-created_on')[:20]
+    for report in reports:
+        try:
+            if report.report_type == "answer":
+                thread_id = Post.objects.get(pk=report.record_id).thread.id
+                thread_title = Post.objects.get(pk=report.record_id).thread.title
+                url = "/" + str(thread_title) + "/" + str(thread_id)+ "/post/" + str(report.record_id)
+            elif report.report_type == "question":
+                title = Thread.objects.get(id=report.record_id).title
+                record_id = report.record_id
+                url = "/" + str(title) + "/" + str(record_id)
+            username = User.objects.get(pk=report.reporter_id).username
+            response_data["reported_by"] = username
+            response_data["report_type"] = report.report_type
+            response_data["report_id"] = url
+            result[count] = response_data
+            response_data = {}
+        except:
+            response_data = {}
+        count = count + 1
+    response = HttpResponse(json.dumps(result), status='200', content_type="application/json")
+    return response
+
+@detail_route(methods=['get', 'post'])
+def send_email(self, thread_pk, email_id, user_id):
+    thread_url =thread_url ='http://188.166.216.153:8000/t/' + Thread.objects.get(pk=thread_pk).slug + '/' + thread_pk
+    inviter_email = user.User.objects.get(pk=user_id).email
+    subject = "Invitation For Discussion"
+    message = "Hello, You Got an invitaion to join the discussion for %s by %s" %(thread_url,inviter_email)
+    from_email = setting.EMAIL_HOST_USER
+    to_email = email_id
+    created = datetime.datetime.now(tz=timezone.utc)
+    updated = datetime.datetime.now(tz=timezone.utc)
+    try:
+        User.objects.get(pk=user_id).userinvitation_set.create(invited_email=email_id, created_on=created, updated_on=updated)
+        # UserInvitation.objects.create(invited_email=email_id, invitor_id=user_id, created_on=created, updated_on=updated)
+        response = send_mail(subject, message, from_email, [to_email])
+    except:
+        response = 0;
+
+    response_data = {}
+    if response == 1:
+        result = "True"
+    else:
+        result = "False"
+    response_data['result'] = result
+    return HttpResponse(json.dumps(response_data), status='200', content_type="application/json")

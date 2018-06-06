@@ -4,6 +4,7 @@ from misago.threads.api.threadpoll import ThreadPollViewSet
 from misago.threads.api.threadposts import PrivateThreadPostsViewSet, ThreadPostsViewSet
 from misago.threads.api.threads import PrivateThreadViewSet, ThreadViewSet
 from django.conf.urls import include, url
+from misago.threads.api import threads
 
 
 router = MisagoApiRouter()
@@ -24,10 +25,9 @@ router.register(
 )
 send_email = [
     url(
-        r'threads/(?P<thread_pk>[^/.]+)/send_email/(?P<email_id>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/(?P<user_id>[^/.]+)', ThreadViewSet.send_email, name='thread-invite'
-    ),
-    url(r'threads/(?P<thread_pk>[^/.]+)/report/(?P<type>[^/.]+)/(?P<user_id>[^/.]+)', ThreadViewSet.report, name='report'),
-    url(r'threads/(?P<user_id>[^/.]+)/get_all_reports', ThreadViewSet.get_all_reports, name='get-all-reports'),
+        r'threads/(?P<thread_pk>[^/.]+)/send_email/(?P<email_id>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/(?P<user_id>[^/.]+)', threads.send_email  ),
+    url(r'threads/(?P<thread_pk>[^/.]+)/report/(?P<type>[^/.]+)/(?P<user_id>[^/.]+)', threads.report),
+    url(r'threads/(?P<user_id>[^/.]+)/get_all_reports', threads.get_all_reports),
 ]
 
 urlpatterns = router.urls + send_email

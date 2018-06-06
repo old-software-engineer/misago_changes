@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy
 from misago.markup import common_flavour
 from misago.threads.checksums import update_post_checksum
 from misago.threads.validators import validate_post, validate_post_length, validate_title
+from misago.threads.models import Tag
 
 from . import PostingEndpoint, PostingMiddleware
 
@@ -43,17 +44,10 @@ class ReplyMiddleware(PostingMiddleware):
             splited_tags = tags.split("#")
             for tag in splited_tags:
                 if tag:
-                    self.tag.tag_name = tag.replace(" ", "")
-                    self.tag.updated_on = self.datetime
-                    self.tag.created_on = self.datetime
-                    self.tag.thread_id = self.tag.thread.id
-                    self.tag.save()
-                    self.tag.id = self.tag.id+1
-                    self.tag.pk =  self.tag.pk+1
-                    self.tag.tag_name = ""
-                    self.tag.updated_on = ""
-                    self.tag.created_on = ""
-                    self.tag.thread_id = ""
+                    try:
+                        Tag.objects.create(tag_name=tag.replace(" ", ""), updated_on=self.datetime, created_on=self.datetime,thread_id=self.tag.thread.id)
+                    except:
+                        raise Exception("error saving tags")
 
         self.post.update_search_vector()
         update_post_checksum(self.post)

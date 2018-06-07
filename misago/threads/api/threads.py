@@ -203,7 +203,7 @@ def get_all_reports(self, user_id):
                 thread_title = Post.objects.get(pk=report.record_id).thread.title
                 url = "/" + str(thread_title) + "/" + str(thread_id)+ "/post/" + str(report.record_id)
             elif report.report_type == "question":
-                title = Thread.objects.get(id=report.record_id).title
+                title = Thread.objects.get(id=report.record_id).slug
                 record_id = report.record_id
                 url = "/" + str(title) + "/" + str(record_id)
             username = User.objects.get(pk=report.reporter_id).username

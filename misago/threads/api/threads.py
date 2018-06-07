@@ -200,7 +200,7 @@ def get_all_reports(self, user_id):
         try:
             if report.report_type == "answer":
                 thread_id = Post.objects.get(pk=report.record_id).thread.id
-                thread_title = Post.objects.get(pk=report.record_id).thread.title
+                thread_title = Post.objects.get(pk=report.record_id).thread.slug
                 url = "/" + str(thread_title) + "/" + str(thread_id)+ "/post/" + str(report.record_id)
             elif report.report_type == "question":
                 title = Thread.objects.get(id=report.record_id).slug

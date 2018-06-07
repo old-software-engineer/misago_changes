@@ -311,7 +311,7 @@ class Report extends React.Component {
           <span className='material-icon'>
             flag
         </span>
-        {gettext('Report answer')}
+        {gettext('Report')}
       </button>
     )
   }

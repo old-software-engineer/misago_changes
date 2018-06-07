@@ -9,15 +9,10 @@ import ajax from 'misago/services/ajax';
 import snackbar from 'misago/services/snackbar';
 import store from 'misago/services/store';
 import * as thread from 'misago/reducers/thread';
-var tags_sting = ""
 
 export default class extends Form {
   constructor(props) {
     super(props);
-    console.log(props);
-    for (var i = 0; i < props.tags.results.length; i++) {
-      tags_sting = tags_sting + "#" + props.tags.results[i].tag_name
-    }
     this.state = {
       isEditing: false,
       isLoading: false,
@@ -165,12 +160,12 @@ export default class extends Form {
                     {thread.title}
                   </h1>
 
-                  <h6 id={gettext("thread_tags")} style={{color: "white" }}>{
+                  <h6 id={gettext("thread_tags")} style={{color: "#7c4dff"  }}>{
                       this.props.tags.results.map((key, index) => (
                          <button
                              className="hidden-xs btn btn-default btn-sm pull-left"
-                             style={{marginRight: 4,borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}
-                         ><span style={{color: 'black'}}>{key.tag_name}</span></button>
+                             style={{marginRight: 4,borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50,backgroundColor: "#7c4dff",border: 0 }}
+                         ><span style={{color: 'white'}}>{key.tag_name}</span></button>
                       ))
                   }</h6>
                 </div>
@@ -210,14 +205,14 @@ export default class extends Form {
                 <h1>
                   {thread.title}
                 </h1>
-                <h6 id={gettext("thread_tags")} style={{color: "white" }}>{
-                    this.props.tags.results.map((key, index) => (
+                <h6 id={gettext("thread_tags")} style={{color: "#7c4dff"  }}>{
+                      this.props.tags.results.map((key, index) => (
                          <button
                              className="hidden-xs btn btn-default btn-sm pull-left"
-                             style={{marginRight:4, borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}
-                         ><span style={{color: 'black'}}>{key.tag_name}</span></button>
+                             style={{marginRight: 4,borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50,backgroundColor: "#7c4dff",border: 0 }}
+                         ><span style={{color: 'white'}}>{key.tag_name}</span></button>
                       ))
-                }</h6>
+                  }</h6>
               </div>
               <div className="col-sm-3 col-md-2">
                 <div className="row xs-margin-top md-margin-top-no">
@@ -239,14 +234,14 @@ export default class extends Form {
         <Breadcrumbs path={thread.path} />
         <div className="container">
           <h1>{thread.title}</h1>
-          <h6 id={gettext("thread_tags")} style={{ color: "white" }}>{
-              this.props.tags.results.map((key, index) => (
+          <h6 id={gettext("thread_tags")} style={{color: "#7c4dff"  }}>{
+                      this.props.tags.results.map((key, index) => (
                          <button
                              className="hidden-xs btn btn-default btn-sm pull-left"
-                             style={{ marginRight: 4,borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}
-                         ><span style={{color: 'black'}}>{key.tag_name}</span></button>
+                             style={{marginRight: 4,borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomLeftRadius: 50, borderBottomRightRadius: 50,backgroundColor: "#7c4dff",border: 0 }}
+                         ><span style={{color: 'white'}}>{key.tag_name}</span></button>
                       ))
-          }</h6>
+                  }</h6>
         </div>
         <Stats thread={thread} parentProps={this.props} />
       </div>
